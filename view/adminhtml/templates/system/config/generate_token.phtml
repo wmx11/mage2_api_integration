@@ -1,0 +1,33 @@
+<script>
+    var generateNonce = function generateNonce() {
+        var d = Date.now();
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = (d + Math.random() * 16) % 16 | 0;
+            d = Math.floor(d / 16);
+            return (c == 'x' ? r : r & 0x7 | 0x8).toString(16);
+        });
+    };
+    require([
+        'jquery',
+        'prototype',
+    ], function (jQuery) {
+        jQuery("#v1_general_callbackToken");
+        jQuery('#generate_token').click(function () {
+            var tokenField = jQuery("#v1_general_callbackToken");
+            tokenField.val(generateNonce());
+            var tokenData = 'token=' + tokenField.val();
+            jQuery.ajax({
+                type: "POST",
+                showLoader: "true",
+                url: "<?php echo $block->getCallbackTokenHandlerUrl(); ?>",
+                data: tokenData,
+                success: function () {
+                    console.log(tokenField.val());
+                }
+            })
+
+        });
+    });
+</script>
+
+<?php echo $block->getButtonHtml() ?>

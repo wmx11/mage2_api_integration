@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+
+        <tab id="vipps" translate="label" sortOrder="10">
+            <label>Vipps Signup</label>
+        </tab>
+
+        <section id="v1" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+
+            <class>separator-top</class>
+            <label>Partner Signup Integration</label>
+            <tab>vipps</tab>
+
+            <resource>Vipps_SignupIntegration::SignupIntegration_config</resource>
+
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+
+                <label>Partner Signup Integration Configuration</label>
+
+                <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enable Module</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="orgnumber" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Organization Number</label>
+                    <comment>Norwegian Organization Number</comment>
+                </field>
+
+                <field id="partnerId" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Partner ID</label>
+                    <comment>PartnerID given by Vipps</comment>
+                </field>
+
+                <field id="pricePackage" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Subscription Package ID</label>
+                    <comment>Price Package to be Used</comment>
+                </field>
+
+                <field id="merchantWebsite" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Merchant Website</label>
+                </field>
+
+                <field id="callbackToken" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Callback Token</label>
+                </field>
+
+                <field id="signupId" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Signup ID by Vipps</label>
+                    <comment>Signup ID Provided by Vipps</comment>
+                </field>
+
+                <field id="signupLink" type="hidden" sortOrder="0" showInDefault="1" showInWebsite="0" showInStore="0">
+                </field>
+
+                <field id="generateCallback" translate="label comment" type="button" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <frontend_model>Vipps\SignupIntegration\Block\System\Config\GenerateToken</frontend_model>
+                </field>
+
+                <field id="signup" translate="label comment" type="button" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <frontend_model>Vipps\SignupIntegration\Block\System\Config\Register</frontend_model>
+                </field>
+
+            </group>
+
+        </section>
+    </system>
+</config>
+

@@ -1,0 +1,114 @@
+<script>
+    require([
+        'jquery',
+        'prototype',
+    ], function (jQuery) {
+        let signupIdField = jQuery("#v1_general_signupId");
+        let orgNumber = jQuery("#v1_general_orgnumber");
+        let partnerId = jQuery("#v1_general_partnerId");
+        let subscription = jQuery("#v1_general_pricePackage");
+        let merchantWebsite = jQuery("#v1_general_merchantWebsite");
+        let callbackToken = jQuery("#v1_general_callbackToken");
+        let generateLinkButton = jQuery('#vipps_register');
+        let signupUrlField = jQuery("#v1_general_signupLink");
+
+        signupIdField.prop("readonly", true);
+
+        function setSignupLink(signupValue) {
+            if (jQuery("#reg_link").length === 0) {
+                return `<div id="reg_link" style="padding-top: 20px;">
+                            <a href=${signupValue}>Registration Link</a>
+                        </div>`;
+            }
+        }
+
+        function validateFields() {
+            if (
+                orgNumber.val() !== "" &&
+                partnerId.val() !== "" &&
+                subscription.val() !== "" &&
+                merchantWebsite.val() !== "" &&
+                callbackToken.val() !== ""
+            ) {
+                return true;
+            }
+        }
+
+        function generateRegistrationLink(signupLink) {
+            if (signupUrlField.val() !== "" && signupUrlField.val() !== null) {
+                generateLinkButton.after(setSignupLink(signupLink));
+            }
+        }
+
+        if (validateFields() !== true) {
+            generateLinkButton.prop('disabled', true);
+            generateLinkButton.text("Please Fill In All The Fields And Press 'Save Config'");
+        }
+
+        generateRegistrationLink(signupUrlField.val());
+
+        generateLinkButton.click(function () {
+            jQuery("#reg_link").remove();
+            jQuery.ajax({
+                showLoader: "true",
+                type: "POST",
+                url: "<?php echo $block->getJsonGeneratorUrl(); ?>",
+                data: {request: "true"},
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    jQuery.ajax({
+                        showLoader: "true",
+                        type: "POST",
+                        url: "<?php echo $block->getVippsPartialSignupUrl(); ?>",
+                        data: data,
+                        dataType: "JSON",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            console.log("Json Caught Successfully");
+                            console.log(data["signup-id"]);
+                            console.log(data);
+                            signupIdField.val(data["signup-id"]);
+                            let signupUrl = data["vippsURL"];
+                            jQuery.ajax({
+                                showLoader: "true",
+                                type: "POST",
+                                url: "<?php echo $block->getSignupIdHandlerUrl(); ?>",
+                                data: data["signup-id"],
+                                contentType: "application/json; charset=utf-8",
+                                success: function (data) {
+                                    console.log("Signup ID Inserted" + " " + data);
+                                    signupUrlField.val(signupUrl).trigger("change");
+                                    generateRegistrationLink(signupUrlField.val());
+                                },
+                                error: function () {
+                                    console.log("Error getting signup ID");
+                                }
+                            })
+                        },
+                        error: function () {
+                            console.log("There was an error");
+                        }
+                    })
+                },
+                error: function (e) {
+                    console.log(e.message);
+                }
+            })
+        });
+
+        signupUrlField.change(function() {
+            jQuery.ajax({
+                type: "POST",
+                url: "<?php echo $block->getSignupIdHandlerUrl(); ?>",
+                data: "url=" + signupUrlField.val(),
+                success: function () {
+                    console.log(signupUrlField.val() + " successfully inserted");
+                }
+            });
+        });
+
+    });
+</script>
+
+<?php echo $block->getButtonHtml() ?>

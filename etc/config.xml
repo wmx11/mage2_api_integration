@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <v1>
+            <general>
+                <enable>1</enable>
+                <orgnumber></orgnumber>
+                <partnerId></partnerId>
+                <pricePackage></pricePackage>
+                <merchantWebsite></merchantWebsite>
+                <callbackToken></callbackToken>
+                <signupId></signupId>
+                <generateCallback>Generate Token</generateCallback>
+                <signup>Signup With Vipps</signup>
+            </general>
+        </v1>
+    </default>
+</config>
+
+

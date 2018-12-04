@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance">
+    <router id="admin">
+        <route id="vipps_signupintegration" frontName="vipps_signupintegration">
+            <module name="Vipps_SignupIntegration" before="Magento_Backend" />
+        </route>
+    </router>
+</config>
